@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cube Generator</title>
+</head>
+<body>
+  <canvas id="canvas" width="400" height="400" style="border:1px solid black;"></canvas>
+  
+  <div style="margin-top:10px;">
+    Length: <input type="number" id="length" value="100">
+    Width: <input type="number" id="width" value="100">
+    Height: <input type="number" id="height" value="100">
+    <button onclick="generateCube()">Generate Cube</button>
+  </div>
+
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+// Center position
+const centerX = 250;
+const centerY = 250;
+
+function drawCube(length, width, height) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = 'white';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Offset so cube is centered
+  let halfL = length / 2;
+  let halfW = width / 2;
+
+  // Base diamond (front face)
+  ctx.beginPath();
+  ctx.moveTo(centerX, centerY);                   // Front middle
+  ctx.lineTo(centerX + halfW, centerY + halfL/2); // Right
+  ctx.lineTo(centerX, centerY + halfL);           // Bottom
+  ctx.lineTo(centerX - halfW, centerY + halfL/2); // Left
+  ctx.closePath();
+  ctx.stroke();
+
+  // Vertical edges (height)
+  ctx.beginPath();
+  ctx.moveTo(centerX - halfW, centerY + halfL/2); // Left bottom
+  ctx.lineTo(centerX - halfW, centerY + halfL/2 - height);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(centerX, centerY + halfL); // Bottom middle
+  ctx.lineTo(centerX, centerY + halfL - height);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(centerX + halfW, centerY + halfL/2); // Right bottom
+  ctx.lineTo(centerX + halfW, centerY + halfL/2 - height);
+  ctx.stroke();
+
+  // Top diamond (back face)
+  ctx.beginPath();
+  ctx.moveTo(centerX, centerY - height);                  // Top middle
+  ctx.lineTo(centerX + halfW, centerY + halfL/2 - height); // Right
+  ctx.lineTo(centerX, centerY + halfL - height);          // Bottom
+  ctx.lineTo(centerX - halfW, centerY + halfL/2 - height);// Left
+  ctx.closePath();
+  ctx.stroke();
+}
+
+window.generateCube = function() {
+  let length = parseInt(document.getElementById('length').value);
+  let width = parseInt(document.getElementById('width').value);
+  let height = parseInt(document.getElementById('height').value);
+
+  drawCube(length, width, height);
+};
+
+// Initial draw
+drawCube(100, 100, 100);
+</script>
+</body>
+</html>
